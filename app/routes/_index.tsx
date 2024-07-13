@@ -1,48 +1,50 @@
 import type { MetaFunction } from "@remix-run/node";
+import { json } from '@remix-run/node';
+import { useFetcher } from '@remix-run/react'
+import { useEffect, useState, useRef } from "react";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
+export let meta: MetaFunction = () => {
+    return [{ title: "Shop-ls" }];
 };
 
+export let action: ActionFunction = async ({ request }) => {
+    let formData = await request.formData();
+    
+    let item = formData.get('item');
+
+    // TODO: Persist item somewhere, somehow...
+
+    return json({ items: [item], ok: true });
+}
+
+function useFormHandler() {
+    let fetcher = useFetcher();
+    let [items, setItems] = useState<string[]>([]);
+    let formRef = useRef<HTMLFormElement | null>(null);
+
+    useEffect(() => {
+        if (fetcher.state === 'idle' && fetcher.data?.ok) {
+            setItems((prev) => prev.concat(fetcher.data?.items));
+            formRef.current?.reset();
+        }
+    }, [fetcher.state, fetcher.data]);
+    return { formRef, items, Form: fetcher.Form };
+}
+
 export default function Index() {
-  return (
-    <div className="font-sans p-4">
-      <h1 className="text-3xl">Welcome to Remix</h1>
-      <ul className="list-disc mt-4 pl-6 space-y-2">
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/quickstart"
-            rel="noreferrer"
-          >
-            5m Quick Start
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/tutorial"
-            rel="noreferrer"
-          >
-            30m Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/docs"
-            rel="noreferrer"
-          >
-            Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
-  );
+    let { formRef, items, Form } = useFormHandler();
+
+    return (
+        <Form className="container" ref={formRef} method="post">
+            <h1>Shop-ls</h1>
+            <ul className="listContainer">
+                <li>
+                    <input type="text" name="item" placeholder="Add item..." />
+                </li>
+                {items.map((item, index) => (
+                    <li key={`${item}_${index}`}>{item}</li>
+                ))}
+            </ul>
+        </Form>
+    );
 }

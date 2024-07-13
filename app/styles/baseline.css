@@ -1,0 +1,22 @@
+html {
+    box-sizing: border-box;
+    font-size: 20px; /* TODO: Should be 100% but currently breaks ui... */
+}
+
+body {
+    line-height: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+    position: relative;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
+

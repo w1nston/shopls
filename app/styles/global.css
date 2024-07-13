@@ -1,0 +1,33 @@
+body {
+    background-color: var(--background-color);
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    color: var(--heading-color);
+}
+
+h1 {
+    font-size: 1.3rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+}
+
+h3 {
+    font-size: 1.1rem;
+}
+
+/* Honor users' preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0s !important;
+        transition-duration: 0s !important;
+    }
+}
+
+.container {
+    padding: 1rem;
+}

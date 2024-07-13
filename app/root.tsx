@@ -5,7 +5,16 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import "./tailwind.css";
+import type { LinksFunction } from '@remix-run/node';
+import colorStylesRef from '~/styles/colors.css?url';
+import baselineStylesRef from '~/styles/baseline.css?url';
+import globalStylesRef from '~/styles/global.css?url';
+
+export let links: LinksFunction = () => [
+    { rel: 'stylesheet', href: colorStylesRef },
+    { rel: 'stylesheet', href: baselineStylesRef },
+    { rel: 'stylesheet', href: globalStylesRef }
+]
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
